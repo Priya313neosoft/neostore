@@ -1,0 +1,72 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/data-grid": "^4.0.0-alpha.36",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@material-ui/styles": "^4.11.4",
+    "@material-ui/x-grid-data-generator": "^4.0.0-alpha.36",
+    "@progress/kendo-drawing": "^1.11.0",
+    "@progress/kendo-licensing": "^1.2.0",
+    "@progress/kendo-react-pdf": "^4.8.0",
+    "@react-pdf/renderer": "^2.0.18",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.2",
+    "clipboard-copy": "^4.0.1",
+    "google-map-react": "^2.1.10",
+    "moment": "^2.29.1",
+    "moments": "0.0.2",
+    "prop-types": "^15.7.2",
+    "randomcolor": "^0.6.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-facebook-login": "^4.1.1",
+    "react-google-login": "^5.2.2",
+    "react-paginate": "^7.1.3",
+    "react-password-mask": "^3.3.1",
+    "react-password-toggle-icon": "^1.1.5",
+    "react-pdf": "^5.3.2",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "react-share": "^4.4.0",
+    "react-sidebar": "^3.0.2",
+    "react-social-login": "^3.4.14",
+    "react-zoom-slider": "^0.1.0",
+    "redux": "^4.1.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.3.0",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
