@@ -17,18 +17,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function Category(props) {
-  console.log("20",props)
+  ////console.log("20",props)
   const classes = useStyles();
   const [category, setCategory] = React.useState([]);
   const [categorySelect, setCategorySelect] = React.useState('');
-  //console.log(category);
+  //////console.log(category);
   const handleChange = (event) => {
     event.preventDefault()
-    console.log("25",event.target.value);
+    ////console.log("25",event.target.value);
     props.datapriya(event.target.value)
     setCategorySelect(event.target.value)
     //  setCategory(event.target.value)
-    console.log(event.target.value);
+    ////console.log(event.target.value);
   };
   useEffect(() => {
     var config = {
@@ -39,9 +39,9 @@ export default function Category(props) {
 
     axios(config)
       .then(function (response) {
-        //console.log(JSON.stringify(response.data));
+        //////console.log(JSON.stringify(response.data));
         const categoryData = response.data.data;
-        //console.log(categoryData);
+        //////console.log(categoryData);
         setCategory(categoryData);
       })
      
@@ -61,7 +61,7 @@ export default function Category(props) {
           onChange={handleChange}
         >
           {category.map((items, index) => {
-           console.log(items);
+          //  ////console.log(items);
             return (
                 <MenuItem value={items.name} key={index}>
                   {items.name}

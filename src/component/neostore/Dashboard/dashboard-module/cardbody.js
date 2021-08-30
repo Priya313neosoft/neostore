@@ -1,123 +1,175 @@
 import React from "react";
 import StarRating from "./starRating";
-import priya2 from "../../../neoscrum-application/Assets/priya2.jpg";
+
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
-function Body() {
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Carousel from "react-material-ui-carousel";
+import { getdashboard } from "../ACTION/dashboard-module.action";
+import { connect } from "react-redux";
+import ClipLoader from "react-spinners/ClipLoader";
+toast.configure();
+function Body(props) {
   const [user, setUser] = useState([]);
-  const [viewAll, setViewAll] = useState(false);
-
-  console.log(user);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    var config = {
-      method: "get",
-      url: "https://neostore-api.herokuapp.com/api/product",
-      headers: {},
-    };
-    axios(config).then(function (response) {
-      // console.log(JSON.stringify(response.data));
-      setUser(response.data.data.docs);
-    });
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 400);
   }, []);
+
+  //console.log(user);
+  useEffect(() => {
+    //console.log(props,"useeeffe")
+    props.dispatch(getdashboard());
+  }, []);
+  // let fill=props.dashd.filter(item=>item.name === props.fildata)
+  // let fill2=props.fildata
+  // //console.log(fill,"666")
+  // //console.log(fill2,"6666")
+  // //console.log(fill=fill2)
+
+  useEffect(() => {
+    setUser(props.dashd ? props.dashd : []);
+    if (props.fildata == "") {
+      setUser(props.dashd ? props.dashd : []);
+    } else {
+      setUser(
+        props.dashd.filter((item) =>
+          item.name
+            .toLowerCase()
+            .replace(/\s/g, "")
+            .trim()
+            .includes(props.fildata.toLowerCase().replace(/\s/g, "").trim())
+        )
+      );
+    }
+  }, [props.dashd, props.fildata]);
+  //
+
   const add = (productId) => {
-    console.log(productId);
+    //console.log(productId);
     var axios = require("axios");
     var data = JSON.stringify({
-      productId: productId,
+      productId: `${productId}`,
       quantity: 1,
     });
+    let token = localStorage.getItem("token");
     var config = {
       method: "post",
       url: "https://neostore-api.herokuapp.com/api/cart",
       headers: {
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmMyNjRhMjBkMDA5MzljN2M2NThiNyIsImVtYWlsIjoibWVldEBnbWFpbC5jb20iLCJkYXRlSXNzdWVkIjoiMjAyMS0wNC0wN1QwNzo0MjoyNS4zNzVaIiwic2VjdXJlRmdwIjoiZTQ4ZDM4ZjliNzVjNWZhMmQxNTgyMGU1NGQ3N2Y3N2VlOGFjNmY2MjU3YWZmODcwYmI4Y2U1NDc1NWRjYmM2YiIsImlhdCI6MTYxNzc4MTM0NSwiZXhwIjoxNjgwODUzMzQ1fQ.i16N1-cXKX6LOGqd-nIZggyxvUA0J84_eedS1o4W9Jc",
+        Authorization: `${token}`,
         "Content-Type": "application/json",
       },
       data: data,
     };
-    axios(config).then(function (response) {
-      // console.log(JSON.stringify(response.data));
-    });
+
+    axios(config)
+      .then(function (response) {
+        //console.log(response === 400, "true");
+        // //console.log(response.status,"131");
+        //console.log(response,"1")
+        //console.log(response.data.success);
+        if (response.status === 200) {
+          //console.log(response.data.message);
+          //console.log(response.status);
+          toast("Product added in the cart");
+        }
+
+        //console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        //console.log(error);
+        if (error) {
+          toast("Product already in the cart");
+        }
+      });
   };
 
-  const allCarts = user.map((items, key) => {
-    console.log(user);
-    return (
-      <>
-        <div className="col-lg-3">
-          <div
-            className="card text-center  my-2 mx-2"
-            style={{ width: "18rem", height: "22rem" }}
-            key={key}
-          >
-            <img
-              className="card-img-top "
-              src={items.subImages}
-              alt="Card image cap"
-              style={{ height: "10rem" }}
-            />
-            <div className="card-body">
-              <Link className="card-title">{items.name}</Link>
-              <h6 className="card-text">{items.price}</h6>
-              <button className="btn btn-danger" onClick={() => add(items._id)}>
-                Add to Card
-              </button>
-              <StarRating rating={items.avgRating}  />
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  });
-  const fewCarts = user.slice(0, 5).map((items, key) => {
-    return (
-      <>
-        <div className="col-lg-3 ">
-          <div
-            className="card text-center my-2 mx-2"
-            style={{ width: "18rem", height: "22rem" }}
-            key={key}
-          >
-            <img
-              className="card-img-top "
-              src={items.subImages}
-              alt="Card image cap"
-              style={{ height: "10rem" }}
-            />
-            <div className="card-body">
-              <Link className="card-title">{items.name}</Link>
-              <h6 className="card-text">{items.price}</h6>
-              <button className="btn btn-danger" onClick={() => add(items._id)}>
-                Add to Card
-              </button>
-              <StarRating rating={items.avgRating}/>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  });
-
-  const viewall = viewAll ? allCarts : fewCarts;
   return (
     <>
+      <div className="container-fluid">
+        {loading ? (
+          <ClipLoader color={"red"} loading={loading} size={50} />
+        ) : (
+          ""
+        )}
+        
+                    
+                
+
+        <Carousel interval="1500">
+          {user.map((items, i) => (
+          
+            <>
+             <Link key={items._id} to={{ pathname:`/home/${items._id}`,state:{items}}}>
+             <img   className=" hhhh_image_carousel" src={items.subImages}  onError={(e)=>{e.target.onerror = null; e.target.src="https://images-na.ssl-images-amazon.com/images/I/71Z0WIYvgmL._SL1500_.jpg"}}/>
+             </Link>
+             </>
+         ))}
+        </Carousel>
+        
+      </div>
+
       <div className="container">
-        <div className="my-5">
-          <img className="card-img-top " src={localStorage.getItem("photo")} alt="Card image cap" />
-        </div>
         <div className="text-center">
           <h4>Popular Products</h4>
-          <Link onClick={() => setViewAll(!viewAll)}>{!viewAll ? 'View All':'View Less'}</Link>
+          <Link to="/product">View All</Link>
         </div>
         <div className="row">
-          {viewall}
+          {user.map((items, key) => {
+            console.log(items,"items")
+            return (
+              <>
+                <div className="col-lg-4 col-sm-4 col-md-4 ">
+                  <div
+                   key={items._id} 
+                    className="card text-center my-4 shadow_lg p-3 mb-5 bg-dark rounded "
+                    style={{ width: "18rem", height: "22rem" }}
+                    key={key}
+                  >
+          
+                     <Link key={items._id} to={{ pathname:`/home/${items._id}`,state:{items}}}>
+                    
+                    <img  className="card-img-top" src={items.subImages} style={{ height: "10rem" }} onError={(e)=>{e.target.onerror = null; e.target.src="https://images-na.ssl-images-amazon.com/images/I/71Z0WIYvgmL._SL1500_.jpg"}}/>
+                       
+                       
+                       {items.name}</Link>
+                    <div className="card-body" >
+                   
+                      {/* <Link className="card-title" key={items._id} to={{pathname:`/home/${items.id}`, statpass={items}}}>{items.name}</Link> */}
+                      <h6 className="card-text" style={{ color: "white" }}>
+                        Rs. {items.price}
+                      </h6>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => add(items._id)}
+                      >
+                        Add to Card
+                      </button>
+                      <StarRating rating={items.avgRating} />
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })}
+          ;
         </div>
       </div>
     </>
   );
 }
 
-export default Body;
+const mapStateToProps = (state) => {
+  //console.log(state.totdashboard.text,"144");
+  return {
+    dashd: state.totdashboard.dashboardata,
+    fildata: state.totdashboard.text,
+  };
+};
+export default connect(mapStateToProps)(Body);

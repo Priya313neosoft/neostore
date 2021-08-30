@@ -33,46 +33,53 @@ import CardBody from "./component/neostore/Dashboard/dashboard-module/cardbody";
 import SimpleMap from "./component/neostore/Dashboard/dashboard-module/SimpleMap";
 import Welcome from "./component/neostore/Dashboard/dashboard-module/welcome";
 import Register from "./component/neostore/Dashboard/user-module/regiister";
-import Recoverpassword from "./component/practice/recoverpassword";
+// import Recoverpassword from "./component/practice/recoverpassword";
 import ForgetPssword from "./component/neostore/Dashboard/user-module/forgetPssword";
 import Recover from "./component/neostore/Dashboard/user-module/recover";
 import Productcards from "./component/neostore/Dashboard/product-module/Productcards";
 import commonProduct from "./component/neostore/Dashboard/product-details/commonProduct";
-
 import carts from "./component/neostore/Dashboard/cart-module/carts";
 import mainorder from "./component/neostore/Dashboard/order-module/mainorder";
 import Maincheckout from "./component/neostore/Dashboard/checkout-module/maincheckout";
-import Paasswordchange from "./component/neostore/Dashboard/change-password/paasswordchange";
-
-import Filter from "./component/neostore/Dashboard/product-module/product"
 import UserProfile from "./component/neostore/Dashboard/my-account-module/userprofile";
-
-
+import UserprofileeEdit from "./component/neostore/Dashboard/my-account-module/userprofileeEdit";
+import ChangePassword from "./component/neostore/Dashboard/change-password/ChangePassword";
+import PrivateRoute from "./component/neostore/Dashboard/common/privateRoute"
+import Error from "./component/neostore/Dashboard/common/error";
+import cardbody from "./component/neostore/Dashboard/dashboard-module/cardbody";
+// import CommonProduct from "./component/neostore/Dashboard/product-details/commonProduct";
 
 function App() {
+ 
   return (
     <>
+    
       <Router>
         {/* ..................neostore......................................    */}
         <Header />
-        <Route path="/forgetpassword" component={ForgetPssword} />
-        <Route path="/recoverpassword" component={Recoverpassword} />
+       <Switch>
+      
         <Route path="/welcome" component={Welcome} />
         <Route path="/locateus" component={SimpleMap} />
         <Route path="/login" component={Login} />
-        <Route path="/" component={CardBody} exact />
+        <Route path="/home" component={CardBody} exact />
         <Route path="/register" component={Register} />
-        <Route path="/recover" component={Recover} />
         <Route path="/product" component={Productcards} />
-        <Route path="/commonProduct" component={commonProduct} />
-        <Route path="/cart" component={carts}/>
-        <Route path="/order" component={mainorder}/>
-        <Route path="/checkout" component={Maincheckout}/>
-        <Route path="/passwordchange"component={Paasswordchange}/>
-        {/* <Route path="/filter" component={Filter}/> */}
- <Route path="/profile" component={UserProfile}/>
-        {/* <Route path="/Login-neoscrum" component={LoginNeoScrum}/> */}
+        {/* <Route path="/commonProduct" component={commonProduct} /> */}
+        <Route path="/home/:_id" component={commonProduct}/>
+        <PrivateRoute path="/recover" component={Recover} />
+        <PrivateRoute path="/cart" component={carts}/>
+        <PrivateRoute path="/order" component={mainorder}/>
+        <PrivateRoute path="/checkout" component={Maincheckout}/>
+        <PrivateRoute path="/passwordchange" component={ChangePassword}/>
+        <PrivateRoute path="/profile" component={UserProfile}/>
+        <PrivateRoute path="/editprofile" component={UserprofileeEdit}/>
+        <Route path="/forgetpassword" component={ForgetPssword} />
+        {/* <PrivateRoute path="/recoverpassword" component={Recoverpassword} /> */}
+        <Route path="*" component={Error}/>
+        </Switch>    
         <Footer />
+        
 
         {/* neoscrum  route   .................................................. */}
         {/* <NAVBAR/>  

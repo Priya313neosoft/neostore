@@ -1,28 +1,41 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import LeftCustomer from "../order-module/leftCustomer";
 import UserprofileEdit from "./userprofileeEdit";
+
 function UserProfile() {
+  let history = useHistory();
+
+  const handleClick = () => {
+    history.push("/editprofile");
+  };
   return (
     <>
       <div className="container">
+          <h3 className="text-center my-4">Profile</h3>
+          
+       
+        <hr />
         <div className="row">
-          <div className="col-lg-4 col-md-4 col-sm-4">
+         
+          <div className="col-lg-6 col-md-4 col-sm-4 ">
             <LeftCustomer />
           </div>
-          <div className="col-lg-8 col-md-8 col-sm-8">
-            <div className="content" style={{ textAlign: "left" }}>
-              <div className="wrapper-1">
-                <div className="wrapper-2">
-                  <p>FirstName{localStorage.getItem("fname")}</p>
-                  <p>LastName {localStorage.getItem("lname")}</p>
-                  <p>Gender:{localStorage.getItem("gender")}</p>
-                  <p>Date of Birth:{localStorage.getItem("dob")}</p>
-                  <p>Mobile No.:{localStorage.getItem("phone")}</p>
-                  <p>Email Address:{localStorage.getItem("email")}</p>
-
-                  <button className="go-home">
-                    <UserprofileEdit />
+          <div className="col-lg-6 col-md-8 col-sm-8">
+            <div style={{ textAlign: "left" }}>
+              <div
+                className="card card_mob  bg-light rounded "
+                style={{ width: "28rem", height: "20rem" }}
+              >
+                <div className="card-body">
+                  <p><b className='mr-3'>FirstName :</b> {localStorage.getItem("fname")}</p>
+                  <p><b className='mr-3'>LastName :</b> {localStorage.getItem("lname")}</p>
+                  <p><b className='mr-3'>Gender :</b> {localStorage.getItem("gender")}</p>
+                  <p><b className='mr-3'>Date of Birth : </b>{localStorage.getItem("dob")}</p>
+                  <p><b className='mr-3'>Mobile No. :</b> {localStorage.getItem("phone")}</p>
+                  <p><b className='mr-3'>Email Address :</b> {localStorage.getItem("email")}</p>
+                  <button className="btn btn-md btn-dark" onClick={handleClick}>
+                    Edit
                   </button>
                 </div>
               </div>

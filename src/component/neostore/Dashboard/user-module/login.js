@@ -3,11 +3,15 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "./neostore.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { OldSocialLogin as SocialLogin } from "react-social-login";
+import TwitterLogin from "react-twitter-auth";
+toast.configure();
 const handleSocialLogin = (user, err) => {
-  console.log(user);
-  console.log(err);
+  //console.log(user);
+  //console.log(err);
 };
 function Login() {
   const [emailName, setEmailName] = useState("");
@@ -16,8 +20,8 @@ function Login() {
   let history = useHistory();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
-    console.log(emailName, password);
+    //console.log(e);
+    //console.log(emailName, password);
  
 var data = JSON.stringify({
   "email": emailName,
@@ -35,16 +39,28 @@ var config = {
 
 axios(config)
 .then(function (response) {
-  console.log(JSON.stringify(response.data));
+  //console.log(JSON.stringify(response.data));
+  //console.log(response.data.data.token)
+  localStorage.setItem("tokens",response.data.data.token)
   history.push("/home");
   // window.alert("Enter your correct username and password")
 })
 .catch(function (error) {
-  console.log(error);
+  //console.log(error);
+  if(error){
+    toast("Please enter correct UserName and Password");
+  }
 });
  
 
   };
+  
+  const onFailed = ()=>{
+
+  }
+  const onSuccess = ()=>{
+
+  }
   return (
     <>
       <div className="container">
@@ -71,7 +87,7 @@ axios(config)
                   style={{ color: "white" }}
                 >
                     <SocialLogin
-                    provider="facebook"
+                    provider="google"
                     appId="352188369906480"
                     callback={handleSocialLogin}
                   >
@@ -84,7 +100,15 @@ axios(config)
                 </Link>
               </div>
               <div className="icons_design3 my-2">
-                <Link
+              <TwitterLogin
+            className="tw"
+            style={{}}
+  loginUrl="http://localhost:3000/api/v1/auth/twitter"
+  onFailure={onFailed}
+  onSuccess={onSuccess}
+  requestTokenUrl="http://localhost:3000/api/v1/auth/twitter/reverse"
+/>
+                {/* <Link
                   to="/https://www.facebook.com/"
                   style={{ color: "white" }}
                 >
@@ -93,7 +117,7 @@ axios(config)
                     style={{ color: "white" }}
                   ></i>
                   Login with Twitter
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>

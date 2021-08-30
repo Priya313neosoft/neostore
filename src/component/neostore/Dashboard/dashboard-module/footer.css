@@ -1,0 +1,45 @@
+
+.hhhh_image_carousel{
+    height: 600px;
+    /* width: 1500px; */
+    width:100%
+}
+.shadow_lg{
+    box-shadow: 1em .4em grey, -1em 0 .4em rgb(77, 77, 73);
+}
+.wrapper-3 {
+    padding: 52px;
+    text-align: left;
+ font-weight: 700; 
+}
+ body {
+    margin: 0;
+    padding: 0;
+    height:100%;
+
+   }
+   .Apps{
+    color: #228b22;
+    text-align: center;
+   }
+   footer {
+    background-color: black;
+    margin-top: auto;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    color: white;
+   
+   } 
+   @media only screen and (max-width: 600px) {
+    .card_mobile{
+        width: 17rem!important;
+
+    }
+    .card_mob{
+        width: 18rem!important;
+        margin-top: 20px;
+    }
+   
+  }
+  

@@ -1,6 +1,11 @@
 import React from "react";
+import {useHistory} from "react-router-dom"
 
-function welcome() {
+function Welcome() {
+  let history=useHistory()
+  const handleClick=()=>{
+    history.push("/")
+  }
   return (
     <>
       <div className="content">
@@ -9,7 +14,7 @@ function welcome() {
             <h1>Thank you !</h1>
             <p>Thanks for subscribing to our news letter. </p>
             <p>you should receive a confirmation email soon </p>
-            <button className="go-home">go home</button>
+            <button onClick={handleClick} className="go-home">go home</button>
           </div>
         </div>
       </div>
@@ -17,4 +22,4 @@ function welcome() {
   );
 }
 
-export default welcome;
+export default Welcome;

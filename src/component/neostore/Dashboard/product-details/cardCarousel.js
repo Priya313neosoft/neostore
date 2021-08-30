@@ -20,7 +20,7 @@ const data = [
 
 function CardCarousel(props) {
   // const {image}=props
-  console.log(props,"propsimage")
+  //console.log(props,"propsimage")
   return (
     <div>
       <SliderImage

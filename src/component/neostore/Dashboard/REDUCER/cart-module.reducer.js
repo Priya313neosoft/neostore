@@ -4,18 +4,21 @@ const INITIAL_STATE={
 
 }
 const cartReducer=(state=INITIAL_STATE,action)=>{
-    console.log(action.payload);
-    console.log(state);
-    console.log(action);
+    //console.log(action.payload);
+    //console.log(state);
+    //console.log(action);
     switch(action.type){
         case GET_TO_CART:
+          
         return{
             ...state,
+           
             cartreddata:action.payload
         }
         default:
             return state;
     }
+   
 
 }
 export default cartReducer;

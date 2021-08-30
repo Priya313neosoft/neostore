@@ -16,14 +16,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function Category(props) {
-  //console.log("19",props)
+  ////console.log("19",props)
   const classes = useStyles();
   const [color, setColor] = React.useState([]);
   const [colorSelect, setColorSelect] = React.useState("");
-  ////console.log(color);
+  //////console.log(color);
   const handleChange = (event) => {
-    ////console.log(event.target.value)
-    //console.log("jjjjj", color);
+    //////console.log(event.target.value)
+    ////console.log("jjjjj", color);
     props.datapriya(event.target.value);
     event.preventDefault();
     setColorSelect(event.target.value);
@@ -37,13 +37,13 @@ export default function Category(props) {
 
     axios(config)
       .then(function (response) {
-        ////console.log(JSON.stringify(response.data));
+        //////console.log(JSON.stringify(response.data));
         const colorData = response.data.data;
-        ////console.log(colorData);
+        //////console.log(colorData);
         setColor(colorData);
       })
       .catch(function (error) {
-        ////console.log(error);
+        //////console.log(error);
       });
   }, []);
 
@@ -58,7 +58,7 @@ export default function Category(props) {
           onChange={handleChange}
         >
           {color.map((items, index) => {
-            //console.log("66",items);
+            ////console.log("66",items);
             return (
               <MenuItem value={items.name} key={index}>
                 {items.name}

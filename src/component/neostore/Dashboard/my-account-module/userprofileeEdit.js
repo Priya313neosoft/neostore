@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-function UserprofileEdit() {
+function UserprofileeEdit() {
   const [firstName, setFirstName] = useState(localStorage.getItem("fname"));
   const [lastName, setLastName] = useState(localStorage.getItem("lname"));
   const [gender, setGender] = useState(localStorage.getItem("gender"));
@@ -8,152 +8,127 @@ function UserprofileEdit() {
   const [phone, setPhone] = useState(localStorage.getItem("phone"));
   const [email, setEmail] = useState(localStorage.getItem("email"));
   console.log("1", firstName, lastName, gender, birth, phone, email);
-  const handleSubmit = () => {
-    // localStorage.setItem()
-    //   localStorage.setItem(firstName="priya",
-    //   // lastName="kumari",gender="female",phone=9430068076,email="priyabhagat313@gmail.com"
-    //   );
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // // localStorage.setItem()
+    //   localStorage.setItem(firstName=firstName,
+      //  lastName=lastName,gender=gender,phone=phone,email=email,
+      // );
     //   console.log("2", firstName, lastName, gender, birth, phone,email);
   };
   return (
     <>
-      <div>
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#formprofile"
-        >
-          Edit
-        </button>
-      </div>
-
-      <div
-        class="modal fade"
-        id="formprofile"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleprofileEditLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header border-bottom-0">
-              <div className="text-center">
-                <img
-                  src={localStorage.getItem("photo")}
-                  className="rounded mx-5 d-block card-img-top rounded-circle"
-                  alt="..."
-                />
-              </div>
-
-              <h3 className="modal-title" id="exampleprofileEditLabel">
-                Profile
-              </h3>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
+    <div className="container" >
+      <div className="row my-4">
+        <div className="col-lg-6 " id="grad1" style={{margin:"0 auto"}}>
+        <form onClick={handleSubmit}>
+        <div class="modal-body">
+          <div className="form-row">
+            <div className="form-group  col-md-6">
+              <label for="inputAddress">first Name</label>
+              <input
+                required
+                value={firstName}
+                type="text"
+                className="form-control"
+                id="inputAddress"
+                placeholder="Enter FirstName"
+                onChange={(e) => setFirstName(e.target.value)}
+              />
             </div>
-            <form onClick={handleSubmit}>
-              <div class="modal-body">
-                <div className="form-group">
-                  <label for="inputAddress">Address</label>
-                  <input
-                    value={firstName}
-                    type="text"
-                    className="form-control"
-                    id="inputAddress"
-                    placeholder="Enter FirstName"
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </div>
+            <div className="form-group col-md-6">
+              <label for="inputCity">LastName</label>
+              <input
+                required
+                value={lastName}
+                type="text"
+                className="form-control"
+                placeholder="Enter Lastname"
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+              />
+            </div>
+          </div>
 
-                <div className="form-row">
-                  <div className="form-group col-md-4">
-                    <label for="inputCity">LastName</label>
-                    <input
-                      value={lastName}
-                      type="text"
-                      className="form-control"
-                      id="inputCity"
-                      placeholder="Enter Lastname"
-                      onChange={(e) => {
-                        setLastName(e.target.value);
-                      }}
-                    />
-                  </div>
+          <div className="form-row">
+            <div className="form-group col-md-6">
+              <label for="inputState">Gender</label>
+              <input
+                required
+                value={gender}
+                type="text"
+                className="form-control"
+                id="inputState"
+                placeholder="Enter Gender"
+                onChange={(e) => {
+                  setGender(e.target.value);
+                }}
+              />
+            </div>
+            <div className="form-group col-md-6">
+              <label for="birthday">Date of Birth</label>
 
-                  <div className="form-group col-md-4">
-                    <label for="inputState">Gender</label>
-                    <input
-                      value={gender}
-                      type="text"
-                      className="form-control"
-                      id="inputState"
-                      placeholder="Enter Gender"
-                      onChange={(e) => {
-                        setGender(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group col-md-4">
-                    <label for="inputCountry">Date of Birth</label>
-                    <input
-                      value={birth}
-                      type="text"
-                      className="form-control"
-                      id="inputCountry"
-                      placeholder="Enter Date of Birth"
-                      onChange={(e) => {
-                        setBirth(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group col-md-4">
-                    <label for="inputZip">Phone</label>
+              <input
+                required
+                value={birth}
+                type="date"
+                id="birthday"
+                name="birthday"
+                className="form-control"
+                placeholder="Enter Date of Birth"
+                onChange={(e) => {
+                  setBirth(e.target.value);
+                }}
+              />
+            </div>
 
-                    <input
-                      type="tel"
-                      className="form-control"
-                      id="inputZip"
-                      placeholder="Enter Phone"
-                      value={phone}
-                      onChange={(e) => {
-                        setPhone(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group col-md-8">
-                    <label for="inputZip">Email</label>
-                    <input
-                      type="tel"
-                      className="form-control"
-                      id="inputZip"
-                      placeholder="Enter Email"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer border-top-0 d-flex justify-content-center">
-                <button type="submit" class="btn btn-success">
-                  Submit
-                </button>
-              </div>
-            </form>
+            <div className="form-group col-md-6">
+              
+            <label for="inputState">Phone</label>
+              <input
+              required
+              pattern="[9]{1}[0-9]{9}"
+                type="tel"
+                className="form-control"
+                id="inputZip"
+                placeholder="Enter Phone"
+                maxLength="10"
+                value={phone}
+                onChange={(e) => {
+                  setPhone(e.target.value.replace(/\D/g,""));
+                }}
+              />
+            </div>
+
+            <div className="form-group col-md-6">
+              <label for="inputZip">Email</label>
+              <input
+              required
+                type="email"
+                className="form-control"
+                id="inputZip"
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
           </div>
         </div>
+        <div class="modal-footer border-top-0 d-flex justify-content-center">
+          <button type="submit" class="btn btn-dark">
+            Submit
+          </button>
+        </div>
+      </form>
+        </div>
       </div>
+    </div>
+     
     </>
   );
 }
 
-export default UserprofileEdit;
+export default UserprofileeEdit;

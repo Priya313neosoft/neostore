@@ -19,18 +19,18 @@ const useStyles = makeStyles((theme) => ({
 function Filter() {
     const classes = useStyles();
     const [category, setCategory] = React.useState([]);
-    //console.log(category);
+    ////console.log(category);
     const handleChange = (event) => {
-      //console.log(event.target.value)
-      //console.log("jjjjj", category);
+      ////console.log(event.target.value)
+      ////console.log("jjjjj", category);
       event.preventDefault();
       setCategory(event.target.value);
     };
     const [color, setColor] = React.useState([]);
-  //console.log(color);
+  ////console.log(color);
   const handleChanges = (event) => {
-    //console.log(event.target.value)
-    //console.log("jjjjj", color);
+    ////console.log(event.target.value)
+    ////console.log("jjjjj", color);
     event.preventDefault();
     setColor(event.target.value);
   };
@@ -43,13 +43,13 @@ function Filter() {
     
         axios(config)
           .then(function (response) {
-            //console.log(JSON.stringify(response.data));
+            ////console.log(JSON.stringify(response.data));
             const categoryData = response.data.data;
-            //console.log(categoryData);
+            ////console.log(categoryData);
             setCategory(categoryData);
           })
           .catch(function (error) {
-            //console.log(error);
+            ////console.log(error);
           });
       }, []);
       useEffect(() => {
@@ -61,13 +61,13 @@ function Filter() {
         
         axios(config)
         .then(function (response) {
-          //console.log(JSON.stringify(response.data));
+          ////console.log(JSON.stringify(response.data));
           const colorData = response.data.data;
-          //console.log(colorData);
+          ////console.log(colorData);
           setColor(colorData);
         })
         .catch(function (error) {
-          //console.log(error);
+          ////console.log(error);
         });
         
           }, []);
@@ -85,7 +85,7 @@ function Filter() {
          onChange={handleChange}
        >
          {category.map((items, index) => {
-           //console.log(items);
+           ////console.log(items);
            return (
              <>
                <MenuItem value={items.id} key={index}>
@@ -108,7 +108,7 @@ function Filter() {
          onChange={handleChanges}
        >
          {color.map((items, index) => {
-           //console.log(items);
+           ////console.log(items);
            return (
              <>
                <MenuItem value={items._id} key={index}>

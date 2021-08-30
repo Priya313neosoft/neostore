@@ -2,6 +2,7 @@ import axios from "axios";
 import {ADD_TO_CART,GET_TO_CART,UPDATE_TO_CART,REMOVE_FROM_PRODUCT,INCREASE_PRODUCT, DECREASE_PRODUCT} from "../CONSTANT/cart-module.constant"
 export function gettocard() {
   return (dispatch) => {
+    
     var config = {
         method: "get",
         url: "https://neostore-api.herokuapp.com/api/cart",

@@ -25,6 +25,8 @@ const useStyles = makeStyles({
 
 const Carts = (props) => {
   console.log(props,"props")
+  const [isLogin, setIsLogin] = useState(false)
+  console.log(isLogin,"login")
   const [cartdata, setCartData] = useState([]);
   const [increase, setIncrease] = useState("");
   const [decrease, setDecrease] = useState("");
@@ -36,13 +38,13 @@ const Carts = (props) => {
     var data = JSON.stringify({
       quantity: quantities + 1,
     });
-
+  let tokens=localStorage.getItem("tokens")
     var config = {
       method: "put",
       url: `https://neostore-api.herokuapp.com/api/cart/${productId}`,
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmMyNjRhMjBkMDA5MzljN2M2NThiNyIsImVtYWlsIjoibWVldEBnbWFpbC5jb20iLCJkYXRlSXNzdWVkIjoiMjAyMS0wNC0wN1QwNzo0MjoyNS4zNzVaIiwic2VjdXJlRmdwIjoiZTQ4ZDM4ZjliNzVjNWZhMmQxNTgyMGU1NGQ3N2Y3N2VlOGFjNmY2MjU3YWZmODcwYmI4Y2U1NDc1NWRjYmM2YiIsImlhdCI6MTYxNzc4MTM0NSwiZXhwIjoxNjgwODUzMzQ1fQ.i16N1-cXKX6LOGqd-nIZggyxvUA0J84_eedS1o4W9Jc",
+         `${tokens}`,
         "Content-Type": "application/json",
       },
       data: data,
@@ -58,13 +60,13 @@ const Carts = (props) => {
     var data = JSON.stringify({
       quantity: quantities - 1,
     });
-
+    let tokens=localStorage.getItem("tokens")
     var config = {
       method: "put",
       url: `https://neostore-api.herokuapp.com/api/cart/${productId}`,
       headers: {
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmMyNjRhMjBkMDA5MzljN2M2NThiNyIsImVtYWlsIjoibWVldEBnbWFpbC5jb20iLCJkYXRlSXNzdWVkIjoiMjAyMS0wNC0wN1QwNzo0MjoyNS4zNzVaIiwic2VjdXJlRmdwIjoiZTQ4ZDM4ZjliNzVjNWZhMmQxNTgyMGU1NGQ3N2Y3N2VlOGFjNmY2MjU3YWZmODcwYmI4Y2U1NDc1NWRjYmM2YiIsImlhdCI6MTYxNzc4MTM0NSwiZXhwIjoxNjgwODUzMzQ1fQ.i16N1-cXKX6LOGqd-nIZggyxvUA0J84_eedS1o4W9Jc",
+        Authorization: `${tokens}`,
+         
         "Content-Type": "application/json",
       },
       data: data,
@@ -77,12 +79,13 @@ const Carts = (props) => {
   };
   const removeItem =  (id) => { 
     console.log(id);
+    let tokens=localStorage.getItem("tokens")
     var config = {
       method: "delete",
       url: `https://neostore-api.herokuapp.com/api/cart/${id}`,
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmMyNjRhMjBkMDA5MzljN2M2NThiNyIsImVtYWlsIjoibWVldEBnbWFpbC5jb20iLCJkYXRlSXNzdWVkIjoiMjAyMS0wNC0wN1QwNzo0MjoyNS4zNzVaIiwic2VjdXJlRmdwIjoiZTQ4ZDM4ZjliNzVjNWZhMmQxNTgyMGU1NGQ3N2Y3N2VlOGFjNmY2MjU3YWZmODcwYmI4Y2U1NDc1NWRjYmM2YiIsImlhdCI6MTYxNzc4MTM0NSwiZXhwIjoxNjgwODUzMzQ1fQ.i16N1-cXKX6LOGqd-nIZggyxvUA0J84_eedS1o4W9Jc",
+        `${tokens}`,
       },
     };
     axios(config).then(
@@ -97,9 +100,14 @@ const Carts = (props) => {
  , [props.cardata])
   useEffect(() => {
     props.dispatch(gettocard())
+    if(localStorage.getItem("tokens")){
+      setIsLogin(true)
+    
+    }
    
   }, []);
   useEffect(() => {
+    setCartData(props.cardata?props.cardata:[])
     // var config = {
     //   method: "get",
     //   url: "https://neostore-api.herokuapp.com/api/cart",
@@ -122,7 +130,7 @@ const Carts = (props) => {
   return (
     <>
       <div className="container">
-        <div className="row">
+        <div className="row my-5">
           {/* <Badge color="secondary" badgeContent={cartdata}>
             <ShoppingCartIcon />
           </Badge> */}
@@ -141,41 +149,43 @@ const Carts = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartdata.map((row) => (
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        <Avatar
-                          src={row.productId.mainImage}
-                          style={{
-                            width: 80,
-                            height: 100,
-                            display: "inline-block",
-                            verticalAlign: "top",
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell align="left">{row.productId.name}</TableCell>
-                      <TableCell align="left">
-                        <i
-                          className="fa fa-minus minus "
-                          style={{ textAlign: "left" }}
-                          onClick={() => decreament(row._id, row.quantity)}
-                        ></i>
-                        <input type="text" value={row.quantity} disabled />
-                        <i
-                          className="fa fa-plus add"
-                          onClick={() => Increament(row._id, row.quantity)}
-                        ></i>
-                      </TableCell>
-                      <TableCell align="center">{row.totalAmount}</TableCell>
-                      <TableCell align="center">
-                        <i
-                          className="fa fa-trash"
-                          onClick={() => removeItem(row._id)}
-                        ></i>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {cartdata.map((row) => {
+                    return localStorage.getItem("tokens")? <TableRow>
+                    <TableCell component="th" scope="row">
+                      <Avatar
+                        src={row.productId.mainImage}
+                        style={{
+                          width: 80,
+                          height: 100,
+                          display: "inline-block",
+                          verticalAlign: "top",
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="left">{row.productId.name}</TableCell>
+                    <TableCell align="left">
+                      <i
+                        className="fa fa-minus minus "
+                        style={{ textAlign: "left" }}
+                        onClick={() => decreament(row._id, row.quantity)}
+                      ></i>
+                      <input type="text" value={row.quantity} disabled />
+                      <i
+                        className="fa fa-plus add"
+                        onClick={() => Increament(row._id, row.quantity)}
+                      ></i>
+                    </TableCell>
+                    <TableCell align="center">{row.totalAmount}</TableCell>
+                    <TableCell align="center">
+                      <i
+                        className="fa fa-trash"
+                        onClick={() => removeItem(row._id)}
+                      ></i>
+                    </TableCell>
+                  </TableRow> : ""
+    
+                  }                  
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -189,27 +199,28 @@ const Carts = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {cartdata.map((row) => (
+                  {cartdata.map((row) => {
+                    return localStorage.getItem("tokens")?
                     <TableRow key={row.name}>
                       <TableRow>
                         <TableCell component="th" scope="row">
-                          subtotal
+                          subtotal=
                           <span style={{ float: "right" }}>
                             Rs. {(total += row.productId.price * row.quantity)}
                           </span>
                         </TableCell>
                       </TableRow>
-                    </TableRow>
-                  ))}
+                    </TableRow>:""
+                   })} 
                   <TableRow>
                     <TableCell component="th" scope="row">
-                      Order total
+                      Order total  =
                       <span>{total}</span>
                     </TableCell>
                   </TableRow>
-                  <TableRow>
+                  <TableRow> 
                     <TableCell component="th" scope="row">
-                      GST(5%)
+                      GST(5%)  =
                       <span>Rs.5000 </span>
                     </TableCell>
                   </TableRow>
@@ -218,7 +229,7 @@ const Carts = (props) => {
                       Total to pay =Rs{total + 5000}
                     </TableCell>
                   </TableRow>
-
+                 :
                   <TableRow>
                     <Button
                       variant="contained"

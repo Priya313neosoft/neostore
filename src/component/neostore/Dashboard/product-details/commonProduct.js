@@ -2,26 +2,14 @@ import React from "react";
 import CardCarousel from "./cardCarousel";
 import Detailscard from "./detailscard";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 import {useEffect,useState} from "react";
 function CommonProduct() {
   const [user, setUser] = useState("");
-  console.log(user,"user");
-useEffect(()=>{
-var config = {
-  method: 'get',
-  url: 'https://neostore-api.herokuapp.com/api/product',
-  headers: { }
-};
+  //console.log(user,"user");
+  const location = useLocation();
+  const { color, price, id, name, avgRating,description,features,mainImage} = location.state.items;
 
-axios(config)
-.then(function (response) {
-  // console.log(JSON.stringify(response.data));
-  const productdata = response.data.data.docs.find(item=>item._id==="607972ea1e0fbc14a57cfc75");
- console.log(productdata,"productdata");
-  setUser(productdata);
-})
-
-},[]);
   return (
     <>
       <div className="container">
@@ -59,7 +47,7 @@ axios(config)
             </nav>
             <div className="tab-content" id="nav-tabContent">
              {/* {user.map((items, key) => {
-              console.log("guyg", items);
+              //console.log("guyg", items);
               return (
                 <> */}
                   {/* <div className="col-lg-4" key={key}> */}
@@ -70,21 +58,17 @@ axios(config)
                 aria-labelledby="nav-home-tab"
               >
                
-               {user.description}
+               {description}
               </div>
                   
-                  {/* </div> */}
-                {/* </> */}
-              {/* );
-            })} 
-              */}
+           
               <div
                 className="tab-pane fade"
                 id="nav-profile"
                 role="tabpanel"
                 aria-labelledby="nav-profile-tab"
               >
-               {user.features}
+               {features}
               </div>
             
             </div>
@@ -94,7 +78,7 @@ axios(config)
           </div>
           <div className="col-lg-6">
             <div>
-            <Detailscard carddetails={user}/>
+            <Detailscard />
 
             </div>
              

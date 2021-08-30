@@ -6,27 +6,40 @@ import { makeStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+// import SliderImage from "react-zoom-slider";
+import CardCarousel from "./cardCarousel";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 import {
   FacebookShareButton,
   FacebookIcon,
   WhatsappIcon,
   WhatsappShareButton,
   PinterestShareButton,
-  //   PinterestShareButton,
   PinterestIcon,
   TwitterShareButton,
   TwitterIcon,
   EmailIcon,
   EmailShareButton,
 } from "react-share";
+toast.configure();
 
 const labels = {
-  1: "Bad",
-  2: "poor",
-  3: "ok",
-  4: "Good",
-  5: "Excellent",
+  0.5: "Useless",
+  1: "Useless+",
+  1.5: "Poor",
+  2: "Poor+",
+  2.5: "Ok",
+  3: "Ok+",
+  3.5: "Good",
+  4: "Good+",
+  4.5: "Excellent",
+  5: "Excellent+",
 };
+
 const useStyles = makeStyles({
   root: {
     width: 200,
@@ -35,36 +48,55 @@ const useStyles = makeStyles({
   },
 });
 
-
 function Detailscard(props) {
-   const [value, setValue] = useState("");
-  const [hover, setHover] = useState("");
-  console.log(props.carddetails);
+  const location = useLocation();
+  console.log(location.state.items);
+
+  console.log("detailsproduct", props, props.location);
+
+  const [values, setValues] = React.useState(2);
+  const [hover, setHover] = React.useState(-1);
+  console.log(hover, "777");
+  console.log(values, "777");
+  const classes = useStyles();
+  //console.log(props.carddetails);
   const carddd = props.carddetails;
-  const { color, price, id,name,avgRating } = props.carddetails;
+  const { color, price, id, name, avgRating,description,features,mainImage} = location.state.items;
   const add = (productId) => {
-    console.log(productId);
+    //console.log(productId);
     var data = JSON.stringify({
       productId: productId,
       quantity: 1,
     });
+    let tokens = localStorage.getItem("tokens");
     var config = {
       method: "post",
       url: "https://neostore-api.herokuapp.com/api/cart",
       headers: {
-        Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmMyNjRhMjBkMDA5MzljN2M2NThiNyIsImVtYWlsIjoibWVldEBnbWFpbC5jb20iLCJkYXRlSXNzdWVkIjoiMjAyMS0wNC0wN1QwNzo0MjoyNS4zNzVaIiwic2VjdXJlRmdwIjoiZTQ4ZDM4ZjliNzVjNWZhMmQxNTgyMGU1NGQ3N2Y3N2VlOGFjNmY2MjU3YWZmODcwYmI4Y2U1NDc1NWRjYmM2YiIsImlhdCI6MTYxNzc4MTM0NSwiZXhwIjoxNjgwODUzMzQ1fQ.i16N1-cXKX6LOGqd-nIZggyxvUA0J84_eedS1o4W9Jc",
+        Authorization: tokens,
+        // ,
         "Content-Type": "application/json",
       },
       data: data,
     };
     axios(config).then(function (response) {
-      // console.log(JSON.stringify(response.data));
-    });
+    
+      if (response.status === 200) {
+        
+        toast("Product added in the cart");
+      }  
+    })
+    .catch(function (error) {
+    
+      if(error){
+        toast("Product already in the cart");
+      }
+    });    
   };
 
   return (
     <div className="container">
+    
       <div className="card " style={{ width: "28rem" }}>
         <div className="card-body">
           <h6 className="card-text">{name}</h6>
@@ -125,44 +157,69 @@ function Detailscard(props) {
               Add to Card
             </button>
             {/* <button className="btn btn-success btn-md" onClick={handlesubmit}>Rate Product</button> */}
+
             <button
               type="button"
-              className="btn btn-primary"
+              class="btn btn-primary"
               data-toggle="modal"
-              data-target=".bd-example-modal-sm"
+              data-target="#exampleModalrating"
             >
-              Rate Product
+              Add Rating
             </button>
 
             <div
-              className="modal fade bd-example-modal-sm"
+              class="modal fade"
+              id="exampleModalrating"
               tabindex="-1"
               role="dialog"
-              aria-labelledby="mySmallModalLabel"
+              aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
-              <div className="modal-dialog modal-sm">
-                <div className="modal-content">
-                <Rating
-        name="hover-feedback"
-        value={value}
-        precision={0.5}
-         onChange={(event, newValue) => {
-           console.log("ratings",props)
-             setValue(props.rating);
-           }}
-           onChangeActive={(event, newHover) => {
-             setHover(newHover);
-           }}
-         onChange={(e) => {
-           setValue(e.target.value);
-         }}
-         onChangeActive={(e) => {
-           setHover(e.target.value);
-       }}
-      />
-       {value !==null && <Box>{labels[hover !==-1 ? hover : value]}</Box>}
-
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelrating">
+                      Rating
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div className={classes.root}>
+                      <Rating
+                        name="hover-feedback"
+                        value={values}
+                        precision={0.5}
+                        onChange={(event, newValues) => {
+                          setValues(event, newValues);
+                        }}
+                        onChangeActive={(event, newHover) => {
+                          setHover(newHover);
+                        }}
+                      />
+                      {values !== null && (
+                        <Box ml={2}>{labels[hover ? hover : values]}</Box>
+                      )}
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                      Save changes
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

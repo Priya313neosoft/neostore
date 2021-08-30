@@ -11,17 +11,18 @@
    
 }
 .rounded-circle {
-  border-radius: 39%!important;
+  /* border-radius: 39%!important; */
+  width: 130px;
 }
 .icons_design2{
     font-size:48px ;
-    background-color: red;
+    background-color: rgb(102, 44, 44);
     color: white;
    
 }
 .icons_design3{
     font-size:48px ;
-    background-color: rgb(159, 187, 240);
+    background-color: rgb(41, 49, 63);
     color: white;
    
 }

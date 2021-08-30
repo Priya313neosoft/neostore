@@ -8,53 +8,67 @@ function Checkoutdetails() {
   const [addresses, setAddresses] = useState([]);
   const [deleted, setDeleted] = useState(false);
   const [updatedAdd,setUpdatedAdd]=useState(false);
+  const [isAdd,setIsAdd]=useState(false);
   const updateadres=()=>{
     setUpdatedAdd(!updatedAdd)
     console.log("priya")
+  }
+ 
+  console.log(deleted);
+  const addaddr=()=>{
+    console.log("pihu")
+    setIsAdd(!isAdd)
 
   }
-  // console.log(addresses);
-  console.log(deleted);
 const removeaddress=(id)=>{
   console.log(id);
+  let tokens=localStorage.getItem("tokens")
   var config = {
     method: "delete",
     url: `https://neostore-api.herokuapp.com/api/user/address/${id}`,
     headers: {
       Authorization:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmMyNjRhMjBkMDA5MzljN2M2NThiNyIsImVtYWlsIjoibWVldEBnbWFpbC5jb20iLCJkYXRlSXNzdWVkIjoiMjAyMS0wNC0wN1QwNzo0MjoyNS4zNzVaIiwic2VjdXJlRmdwIjoiZTQ4ZDM4ZjliNzVjNWZhMmQxNTgyMGU1NGQ3N2Y3N2VlOGFjNmY2MjU3YWZmODcwYmI4Y2U1NDc1NWRjYmM2YiIsImlhdCI6MTYxNzc4MTM0NSwiZXhwIjoxNjgwODUzMzQ1fQ.i16N1-cXKX6LOGqd-nIZggyxvUA0J84_eedS1o4W9Jc",
+        `${tokens}`,
     },
   };
   axios(config)
     .then(function (response) {
       console.log(JSON.stringify(response.data));
+      if(response.data)
+     console.log(window.confirm("If you want to delete"),"123445")
+      window.confirm("If you want to delete")
       setDeleted(!deleted)
     })
-  
-
 }
   
 
   useEffect(() => {
+    let tokens=localStorage.getItem("tokens")
     var config = {
       method: "get",
       url: "https://neostore-api.herokuapp.com/api/user/address",
       headers: {
         Authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmMyNjRhMjBkMDA5MzljN2M2NThiNyIsImVtYWlsIjoibWVldEBnbWFpbC5jb20iLCJkYXRlSXNzdWVkIjoiMjAyMS0wNC0wN1QwNzo0MjoyNS4zNzVaIiwic2VjdXJlRmdwIjoiZTQ4ZDM4ZjliNzVjNWZhMmQxNTgyMGU1NGQ3N2Y3N2VlOGFjNmY2MjU3YWZmODcwYmI4Y2U1NDc1NWRjYmM2YiIsImlhdCI6MTYxNzc4MTM0NSwiZXhwIjoxNjgwODUzMzQ1fQ.i16N1-cXKX6LOGqd-nIZggyxvUA0J84_eedS1o4W9Jc",
+          `${tokens}`,
       },
     };
 
     axios(config).then(function (response) {
-      // console.log(JSON.stringify(response.data));
-      setAddresses(response.data.data.address);
+      let response1=response.data.data.address
+      setAddresses(response1);
+      localStorage.setItem("addressLine",JSON.stringify(response1.map((obb)=>obb.addressLine)))
+      localStorage.setItem("city",JSON.stringify(response1.map((obb)=>obb.city)))
+      localStorage.setItem("state",JSON.stringify(response1.map((obb)=>obb.state)))
+      localStorage.setItem("country",JSON.stringify(response1.map((obb)=>obb.country)))
+      localStorage.setItem("pincode",JSON.stringify(response1.map((obb)=>obb.pincode)))
+   
     });
-  }, [deleted,updatedAdd]);
+  }, [deleted,updatedAdd,isAdd]);
 
   return (
     <>
       <div className="container">
-        <div className="card" style={{ width: "40rem" }}>
+        <div className="card  card_mob" style={{ width: "40rem" }}>
           <div className="card-body">
             <div>
               <h3>Addresses</h3>
@@ -72,20 +86,20 @@ const removeaddress=(id)=>{
                     //   role="alert"
                     ><i className="fa fa-times-circle" style={{float:"right"}} onClick={()=>{removeaddress(items._id)}}></i>
                       <p>
-                        <p>{items._id}</p>
-                        <b>Address: {items.addressLine},</b>
+                     
+                        <b className="mr-3">Address:</b> {items.addressLine},
                       </p>
                       <p>
-                        <b>Pincode: {items.pincode},</b>
+                        <b className="mr-3">Pincode:</b> {items.pincode},
                       </p>
                       <p>
-                        <b>City: {items.city},</b>
+                        <b className="mr-3">City:</b> {items.city},
                       </p>
                       <p>
-                        <b>State: {items.state},</b>
+                        <b className="mr-3">State:</b> {items.state},
                       </p>
                       <p>
-                        <b>Country: {items.country}</b>
+                        <b className="mr-3">Country:</b> {items.country}
                       </p>
 
                       {/* <button
@@ -98,7 +112,7 @@ const removeaddress=(id)=>{
                         <span aria-hidden="true">×</span>
                       </button> */}
                       <div>
-                        <Updateaddress updatedid={items._id} updatecallback={updateadres} />
+                        <Updateaddress updatedid={items._id} updatecallback={updateadres} addressdata={items} />
                       </div>
                       <hr />
                     </div>
@@ -108,7 +122,7 @@ const removeaddress=(id)=>{
             </div>
 
             <div>
-              <AddAddress />
+              <AddAddress addcallback={addaddr}/>
             </div>
           </div>
         </div>

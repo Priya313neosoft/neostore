@@ -9,8 +9,8 @@ function Product() {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [sortBy, setSortBy] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
-    console.log(filteredProducts);
-    console.log(products);
+    //console.log(filteredProducts);
+    //console.log(products);
     useEffect(() => {      
 var config = {
     method: 'get',
@@ -20,7 +20,7 @@ var config = {
   
   axios(config)
   .then(function (response) {
-    console.log(JSON.stringify(response.data));
+    //console.log(JSON.stringify(response.data));
     setProducts(response.data.data);
     setFilteredProducts(response.data.data);
   })
